@@ -1,59 +1,58 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function HomeScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: "#1D3D47", dark: "#A1CEDC" }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          source={require("@/assets/images/globe.png")}
           style={styles.reactLogo}
         />
-      }>
+      }
+    >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
+        <ThemedText type="title">EasyDrive</ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
+      <ThemedText>Valor da Corrida:</ThemedText>
+      <TextInput
+        style={styles.input}
+        placeholder="R$ 0,00"
+        keyboardType="number-pad"
+      />
+      <ThemedText>Distância em km:</ThemedText>
+      <TextInput
+        style={styles.input}
+        placeholder="0,00 km"
+        keyboardType="number-pad"
+      />
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            width: "50%",
+            alignSelf: "center",
+            borderWidth: 4,
+            borderColor: "#1C333E",
+          },
+        ]}
+        //border: 4px solid #1C333E
+        onPress={() => alert("Em breve!")}
+      >
+        <ThemedText style={styles.buttonText}>Confirmar</ThemedText>
+      </TouchableOpacity>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
   stepContainer: {
@@ -61,10 +60,32 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   reactLogo: {
-    height: 178,
+    height: 290,
     width: 290,
     bottom: 0,
     left: 0,
-    position: 'absolute',
+    // position: "absolute",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#CCC",
+    borderRadius: 100,
+    padding: 10,
+    fontSize: 16,
+    backgroundColor: "#FFF",
+    color: "#333",
+    marginBottom: 16,
+  },
+  button: {
+    backgroundColor: "#FFAE00",
+    paddingVertical: 12,
+    borderRadius: 100,
+    paddingHorizontal: 20,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
