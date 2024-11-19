@@ -1,91 +1,248 @@
-import { Image, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import SelectDropdown from "react-native-select-dropdown";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useState } from "react";
+import { Car } from "../../types/types";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+const cars: Car[] = [
+  { name: "Corolla", consumption: 12 }, // km/l
+  { name: "Corsa", consumption: 10 }, // km/l
+];
+
+const globeImages: Record<string, any> = {
+  white: require("@/assets/images/globeWhite.png"),
+  green: require("@/assets/images/globeGreen.png"),
+  red: require("@/assets/images/globeRed.png"),
+};
+
+const gasPrice = 6; // reais
 
 export default function HomeScreen() {
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [distance, setDistance] = useState<string>("");
+  const [rideValue, setRideValue] = useState<string>("");
+  const [gasConsumption, setGasConsumption] = useState<number>(0);
+  const [profit, setProfit] = useState<number>(0);
+  const [message, setMessage] = useState<string>("Esperando dados...");
+  const [globeColor, setGlobeColor] = useState<"white" | "green" | "red">(
+    "white"
+  );
+
+  const handleCarSelect = (car: Car) => {
+    setSelectedCar(car);
+    setGasConsumption(car.consumption);
+  };
+
+  const handleDistanceChange = (text: string) => {
+    setDistance(text);
+  };
+
+  const handleRideValueChange = (text: string) => {
+    setRideValue(text);
+  };
+
+  const calculateProfit = () => {
+    const gasCost = (parseFloat(distance) / gasConsumption) * gasPrice;
+    const profit = parseFloat(rideValue) - gasCost;
+    setProfit(profit);
+    if (profit >= 5) {
+      setMessage("A corrida vale a pena!");
+      setGlobeColor("green");
+    } else {
+      setMessage("A corrida não vale a pena.");
+      setGlobeColor("red");
+    }
+  };
+
+  const handleClear = () => {
+    setSelectedCar(null);
+    setDistance("");
+    setRideValue("");
+    setGasConsumption(0);
+    setProfit(0);
+    setMessage("Esperando dados...");
+    setGlobeColor("white");
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#1D3D47", dark: "#A1CEDC" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/globe.png")}
-          style={styles.reactLogo}
+    <View style={{ flex: 1, flexDirection: "column" }}>
+      <View style={styles.messageContainer}>
+        <Image source={globeImages[globeColor]} style={styles.logo} />
+        <Text style={styles.messageText}>{message}</Text>
+      </View>
+
+      <View style={styles.formContainer}>
+        <Text style={styles.title}>EasyDrive</Text>
+
+        <SelectDropdown
+          data={cars.map((car) => car.name)}
+          onSelect={(selectedItem) =>
+            handleCarSelect(cars.find((car) => car.name === selectedItem)!)
+          }
+          renderButton={(selectedItem, isOpened) => {
+            return (
+              <View style={styles.dropdownButtonStyle}>
+                <Text style={styles.dropdownButtonTxtStyle}>
+                  {(selectedItem && selectedItem) || "Selecione seu carro"}
+                </Text>
+                <Ionicons
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  size={24}
+                  color={"#333"}
+                />
+              </View>
+            );
+          }}
+          renderItem={(item, index, isSelected) => {
+            return (
+              <View
+                style={{
+                  ...styles.dropdownItemStyle,
+                  ...(isSelected && { backgroundColor: "#D2D9DF" }),
+                }}
+              >
+                <Ionicons name={"car"} style={styles.dropdownItemIconStyle} />
+                <Text style={styles.dropdownItemTxtStyle}>{item}</Text>
+              </View>
+            );
+          }}
+          showsVerticalScrollIndicator={false}
+          dropdownStyle={styles.dropdownMenuStyle}
         />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">EasyDrive</ThemedText>
-      </ThemedView>
-      <ThemedText>Valor da Corrida:</ThemedText>
-      <TextInput
-        style={styles.input}
-        placeholder="R$ 0,00"
-        keyboardType="number-pad"
-      />
-      <ThemedText>Distância em km:</ThemedText>
-      <TextInput
-        style={styles.input}
-        placeholder="0,00 km"
-        keyboardType="number-pad"
-      />
-      <TouchableOpacity
-        style={[
-          styles.button,
-          {
-            width: "50%",
-            alignSelf: "center",
-            borderWidth: 4,
-            borderColor: "#1C333E",
-          },
-        ]}
-        //border: 4px solid #1C333E
-        onPress={() => alert("Em breve!")}
-      >
-        <ThemedText style={styles.buttonText}>Confirmar</ThemedText>
-      </TouchableOpacity>
-    </ParallaxScrollView>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Distância (km)"
+          value={distance}
+          onChangeText={handleDistanceChange}
+          keyboardType="numeric"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Valor da corrida (R$)"
+          value={rideValue}
+          onChangeText={handleRideValueChange}
+          keyboardType="numeric"
+        />
+
+        <TouchableOpacity style={styles.button} onPress={calculateProfit}>
+          <Text style={styles.buttonText}>Calcular</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={handleClear}>
+          <Text style={styles.buttonText}>Limpar</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
+  messageContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-    gap: 8,
+    height: "50%",
+    backgroundColor: "#1056B3",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: 10,
   },
-  reactLogo: {
-    height: 290,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    // position: "absolute",
+  messageText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#FFF",
+  },
+  formContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: "50%",
+    backgroundColor: "#99DCFF",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#1056B3",
+  },
+  dropdownButtonStyle: {
+    width: 200,
+    height: 40,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    flexDirection: "row",
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  dropdownButtonTxtStyle: {
+    fontSize: 16,
+    color: "#333",
+  },
+  dropdownButtonArrowStyle: {
+    fontSize: 16,
+    color: "#333",
+  },
+  dropdownItemStyle: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    flexDirection: "row",
+    gap: 4,
+  },
+  dropdownItemIconStyle: {
+    fontSize: 16,
+    color: "#333",
+    marginRight: 10,
+  },
+  dropdownItemTxtStyle: {
+    fontSize: 16,
+    color: "#333",
+  },
+  dropdownMenuStyle: {
+    width: 200,
+    borderRadius: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginTop: -40,
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#CCC",
-    borderRadius: 100,
+    width: 200,
+    height: 40,
+    backgroundColor: "#fff",
+    borderRadius: 10,
     padding: 10,
-    fontSize: 16,
-    backgroundColor: "#FFF",
-    color: "#333",
-    marginBottom: 16,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 10,
   },
   button: {
+    width: 200,
+    height: 40,
     backgroundColor: "#FFAE00",
-    paddingVertical: 12,
-    borderRadius: 100,
-    paddingHorizontal: 20,
+    borderRadius: 20,
+    borderColor: "#1C333E",
+    borderWidth: 2,
+    justifyContent: "center",
     alignItems: "center",
+    marginBottom: 10,
   },
   buttonText: {
-    color: "#FFF",
     fontSize: 16,
+    color: "#1C333E",
     fontWeight: "bold",
   },
 });
