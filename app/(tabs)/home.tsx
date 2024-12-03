@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
 import SelectDropdown from "react-native-select-dropdown";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
@@ -117,28 +119,23 @@ export default function HomeScreen() {
           dropdownStyle={styles.dropdownMenuStyle}
         />
 
-        <TextInput
-          style={styles.input}
+        <Input
           placeholder="Distância (km)"
           value={distance}
           onChangeText={handleDistanceChange}
           keyboardType="numeric"
         />
-        <TextInput
-          style={styles.input}
+
+        <Input
           placeholder="Valor da corrida (R$)"
           value={rideValue}
           onChangeText={handleRideValueChange}
           keyboardType="numeric"
         />
 
-        <TouchableOpacity style={styles.button} onPress={calculateProfit}>
-          <Text style={styles.buttonText}>Calcular</Text>
-        </TouchableOpacity>
+        <Button onPress={calculateProfit} text={"Calcular"} />
 
-        <TouchableOpacity style={styles.button} onPress={handleClear}>
-          <Text style={styles.buttonText}>Limpar</Text>
-        </TouchableOpacity>
+        <Button onPress={handleClear} text={"Limpar"} />
       </View>
     </View>
   );
@@ -228,21 +225,5 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     marginBottom: 10,
-  },
-  button: {
-    width: 200,
-    height: 40,
-    backgroundColor: "#FFAE00",
-    borderRadius: 20,
-    borderColor: "#1C333E",
-    borderWidth: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  buttonText: {
-    fontSize: 16,
-    color: "#1C333E",
-    fontWeight: "bold",
   },
 });
