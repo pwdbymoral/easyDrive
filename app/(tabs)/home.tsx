@@ -55,10 +55,10 @@ export default function HomeScreen() {
     const profit = parseFloat(rideValue) - gasCost;
     setProfit(profit);
     if (profit >= 5) {
-      setMessage("A corrida vale a pena!");
+      setMessage(`A corrida vale a pena! O lucro será de ${profit}`);
       setGlobeColor("green");
     } else {
-      setMessage("A corrida não vale a pena.");
+      setMessage("A corrida não vale a pena, o lucro é apenas de ");
       setGlobeColor("red");
     }
   };
@@ -84,9 +84,13 @@ export default function HomeScreen() {
         <Text style={styles.title}>EasyDrive</Text>
 
         <SelectDropdown
-          data={cars.map((car) => car.name)}
+          data={cars.map((car) => `${car.name}: ${car.consumption} km/l`)} // Exibe o nome e o consumo
           onSelect={(selectedItem) =>
-            handleCarSelect(cars.find((car) => car.name === selectedItem)!)
+            handleCarSelect(
+              cars.find(
+                (car) => `${car.name}: ${car.consumption} km/l` === selectedItem
+              )!
+            )
           }
           renderButton={(selectedItem, isOpened) => {
             return (

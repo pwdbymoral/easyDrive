@@ -12,12 +12,9 @@ const CustomBttn = ({
     <TouchableOpacity
       onPress={handlePress}
       activeOpacity={0.7}
-      style={{containerStyles : isLoading ? opacity - 50 : ""}}
-      disabled={isLoading}
+      style={containerStyles}
     >
-      <Text style={textStyles}>
-        {title}
-      </Text>
+      <Text style={textStyles}>{title}</Text>
     </TouchableOpacity>
   );
 };

@@ -11,7 +11,39 @@ const Login = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {};
+  const submit = async () => {
+    setIsSubmitting(true); // Indica que o envio está em progresso
+    try {
+      const response = await fetch(
+        "http://10.100.3.238:8000/loginMotorista/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: form.email,
+            senha: form.password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        // Login bem-sucedido
+        alert("Login realizado com sucesso!");
+        router.push("../(tabs)/home"); // Redireciona após o login
+      } else {
+        // Exibe erro se houver
+        alert(`Erro: dados incorretos`);
+      }
+    } catch (error) {
+      alert("Erro ao tentar realizar o login. Tente novamente.");
+      console.error(error);
+    } finally {
+      setIsSubmitting(false); // Finaliza o estado de carregamento
+    }
+  };
 
   return (
     <View style={styles.backside}>
@@ -49,7 +81,7 @@ const Login = () => {
         />
         <CustomBttn
           title="Entrar"
-          handlePress={() => router.push("../(tabs)/home")}
+          handlePress={submit} // Chama a função de submit para fazer o login
           textStyles={styles.butao2}
           isLoading={isSubmitting}
         />
