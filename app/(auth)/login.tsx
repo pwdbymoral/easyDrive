@@ -15,7 +15,7 @@ const Login = () => {
     setIsSubmitting(true); // Indica que o envio está em progresso
     try {
       const response = await fetch(
-        "http://10.100.3.238:8000/loginMotorista/login",
+        "http://192.168.113.161:8000/loginMotorista/login",
         {
           method: "POST",
           headers: {

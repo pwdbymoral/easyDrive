@@ -12,10 +12,11 @@ import SelectDropdown from "react-native-select-dropdown";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { Car } from "../../types/types";
+import { useEffect } from "react";
 
 const cars: Car[] = [
-  { name: "Corolla", consumption: 12 }, // km/l
-  { name: "Corsa", consumption: 10 }, // km/l
+  { name: "Corolla", consumption: 10 }, // km/l
+  { name: "Corsa", consumption: 12 }, // km/l
 ];
 
 const globeImages: Record<string, any> = {
@@ -50,16 +51,40 @@ export default function HomeScreen() {
     setRideValue(text);
   };
 
+  useEffect(() => {
+    if (selectedCar) {
+      setGasConsumption(selectedCar.consumption);
+    }
+  }, [selectedCar]); // Dependência no selectedCar
+
   const calculateProfit = () => {
-    const gasCost = (parseFloat(distance) / gasConsumption) * gasPrice;
-    const profit = parseFloat(rideValue) - gasCost;
-    setProfit(profit);
-    if (profit >= 5) {
-      setMessage(`A corrida vale a pena! O lucro será de ${profit}`);
-      setGlobeColor("green");
+    if (distance && rideValue && selectedCar) {
+      const parsedDistance = parseFloat(distance);
+      const parsedRideValue = parseFloat(rideValue);
+      const gasCost = (parsedDistance / gasConsumption) * gasPrice;
+      const profit = parsedRideValue - gasCost;
+
+      // Arredondar o lucro para duas casas decimais
+      const roundedProfit = Math.round(profit * 100) / 100;
+
+      const formattedProfit = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(roundedProfit);
+
+      setProfit(roundedProfit);
+
+      if (roundedProfit >= 5) {
+        setMessage(`A corrida vale a pena! O lucro será de ${formattedProfit}`);
+        setGlobeColor("green");
+      } else {
+        setMessage(
+          `A corrida não vale a pena, o lucro é apenas de ${formattedProfit}`
+        );
+        setGlobeColor("red");
+      }
     } else {
-      setMessage("A corrida não vale a pena, o lucro é apenas de ");
-      setGlobeColor("red");
+      setMessage("Por favor, preencha todos os campos.");
     }
   };
 

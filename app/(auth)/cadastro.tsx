@@ -6,7 +6,7 @@ import FormField from "../../components/FormField";
 
 const Cadastro = () => {
   const [form, setForm] = useState({
-    usuario: "",
+    nome: "",
     email: "",
     password: "",
   });
@@ -17,14 +17,14 @@ const Cadastro = () => {
     try {
       console.log(form);
       const response = await fetch(
-        "http://10.100.3.238:8000/CadastrarMotorista/cadastrar",
+        "http://192.168.113.161:8000/CadastrarMotorista/cadastrar",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            nome: form.usuario, // Usando o nome do usuário no formulário
+            nome: form.nome, // Usando o nome do usuário no formulário
             telefone: "21999999999", // Telefone fixo de exemplo
             email: form.email,
             senha: form.password,
@@ -74,9 +74,9 @@ const Cadastro = () => {
           Venha você também dirigir facilmente
         </Text>
         <FormField
-          title="Usuário"
-          value={form.usuario}
-          handleChangeText={(e) => setForm({ ...form, usuario: e })}
+          title="Nome"
+          value={form.nome}
+          handleChangeText={(e) => setForm({ ...form, nome: e })}
           otherStyles={{ marginBottom: 20 }}
         />
         <FormField
