@@ -1,18 +1,27 @@
-import { TouchableOpacity, Text } from "react-native";
-import React from "react";
+import React, { FC } from "react";
+import { TouchableOpacity, Text, TextStyle, ViewStyle } from "react-native";
 
-const CustomBttn = ({
+interface CustomBttnProps {
+  title: string;
+  handlePress: () => void;
+  containerStyles?: ViewStyle;
+  textStyles?: TextStyle;
+  isLoading?: boolean;
+}
+
+const CustomBttn: FC<CustomBttnProps> = ({
   title,
   handlePress,
   containerStyles,
   textStyles,
-  isLoading,
+  isLoading = false,
 }) => {
   return (
     <TouchableOpacity
       onPress={handlePress}
       activeOpacity={0.7}
       style={containerStyles}
+      disabled={isLoading}
     >
       <Text style={textStyles}>{title}</Text>
     </TouchableOpacity>

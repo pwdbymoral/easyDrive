@@ -13,7 +13,7 @@ const Cadastro = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = async () => {
-    setIsSubmitting(true); // Indica que o envio está em progresso
+    setIsSubmitting(true);
     try {
       console.log(form);
       const response = await fetch(
@@ -24,31 +24,29 @@ const Cadastro = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            nome: form.nome, // Usando o nome do usuário no formulário
-            telefone: "21999999999", // Telefone fixo de exemplo
+            nome: form.nome,
+            telefone: "21999999999",
             email: form.email,
             senha: form.password,
-            meta_diaria_liquida: 150.0, // Meta diária fixa
+            meta_diaria_liquida: 150.0,
           }),
         }
       );
 
       const data = await response.json();
       if (response.ok) {
-        // Cadastro bem-sucedido
-        alert("Cadastro realizado com sucesso!");
-        router.push("../(tabs)/home"); // Redireciona após o cadastro
+        console.log("Cadastro realizado com sucesso!");
+        router.push("../(tabs)/home");
       } else {
-        // Exibe erro se houver
-        console.log(data);
-        console.log(data.message);
-        alert(`Erro: dados incorretos`);
+        console.log("Erro: dados incorretos", data.message);
       }
     } catch (error) {
-      alert("Erro ao tentar cadastrar o motorista. Tente novamente.");
-      console.error(error);
+      console.error(
+        "Erro ao tentar cadastrar o motorista. Tente novamente.",
+        error
+      );
     } finally {
-      setIsSubmitting(false); // Finaliza o estado de carregamento
+      setIsSubmitting(false);
     }
   };
 
@@ -76,12 +74,14 @@ const Cadastro = () => {
         <FormField
           title="Nome"
           value={form.nome}
+          placeholder="Digite seu nome"
           handleChangeText={(e) => setForm({ ...form, nome: e })}
           otherStyles={{ marginBottom: 20 }}
         />
         <FormField
           title="E-mail"
           value={form.email}
+          placeholder="Digite seu e-mail"
           handleChangeText={(e) => setForm({ ...form, email: e })}
           otherStyles={{ marginBottom: 20 }}
           keyboardType="email-address"
@@ -89,6 +89,7 @@ const Cadastro = () => {
         <FormField
           title="Password"
           value={form.password}
+          placeholder="Digite sua senha"
           handleChangeText={(e) => setForm({ ...form, password: e })}
           otherStyles={{ flex: 4 }}
         />
@@ -103,7 +104,7 @@ const Cadastro = () => {
             justifyContent: "center",
             flexDirection: "row",
             gap: 2,
-          }} /*"justify-center pt-5 flex-row gap-2"*/
+          }}
         >
           <Text style={{ color: "white", paddingBottom: 20 }}>
             Já tem uma conta?
