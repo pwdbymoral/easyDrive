@@ -1,7 +1,6 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import React, { useState } from "react";
 import { router, Link } from "expo-router";
-import CustomBttn from "../../components/CustomBttn";
 import Button from "@/components/Button";
 import FormField from "../../components/FormField";
 

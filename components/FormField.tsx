@@ -1,13 +1,13 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  KeyboardTypeOptions,
 } from "react-native";
-import React, { useState } from "react";
-import { FontAwesome } from "@expo/vector-icons";
-import { KeyboardTypeOptions } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 interface FormFieldProps {
   title: string;
@@ -18,29 +18,53 @@ interface FormFieldProps {
   keyboardType?: KeyboardTypeOptions;
 }
 
-const FormFieldIcon: React.FC<{ name: string }> = ({ name }) => {
-  return (
-    <View style={styles.iconWrapper}>
-      <FontAwesome name={name} size={24} color="red" style={styles.icon} />
-    </View>
-  );
-};
+const FormFieldIcon: React.FC<{ name: string }> = ({ name }) => (
+  <View style={styles.iconWrapper}>
+    <Ionicons name={name} size={24} color="red" style={styles.icon} />
+  </View>
+);
 
 const FormFieldPasswordToggle: React.FC<{
   showPassword: boolean;
   handlePassword: () => void;
-}> = ({ showPassword, handlePassword }) => {
-  return (
-    <TouchableOpacity onPress={handlePassword}>
-      <FontAwesome
-        name={!showPassword ? "eye" : "eye-slash"}
-        size={24}
-        color="#dfdede"
-        style={styles.eyeIcon}
-      />
-    </TouchableOpacity>
-  );
-};
+}> = ({ showPassword, handlePassword }) => (
+  <TouchableOpacity onPress={handlePassword}>
+    <Ionicons
+      name={showPassword ? "eye-off" : "eye"}
+      size={24}
+      color="#dfdede"
+      style={styles.passwordToggleIcon}
+    />
+  </TouchableOpacity>
+);
+
+const FormFieldTitle: React.FC<{ title: string }> = ({ title }) => (
+  <Text style={styles.fieldTitle}>{title}</Text>
+);
+
+const FormFieldInput: React.FC<{
+  placeholder: string;
+  value: string;
+  handleChangeText: (text: string) => void;
+  secureTextEntry?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+}> = ({
+  placeholder,
+  value,
+  handleChangeText,
+  secureTextEntry,
+  keyboardType,
+}) => (
+  <TextInput
+    placeholder={placeholder}
+    placeholderTextColor="#ddd"
+    value={value}
+    onChangeText={handleChangeText}
+    secureTextEntry={secureTextEntry}
+    keyboardType={keyboardType}
+    style={styles.inputField}
+  />
+);
 
 const FormField: React.FC<FormFieldProps> = ({
   title,
@@ -53,25 +77,25 @@ const FormField: React.FC<FormFieldProps> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handlePassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const handlePassword = () => setShowPassword((prev) => !prev);
 
   const icon =
-    title === "E-mail" ? "user" : title === "Password" ? "lock" : undefined;
+    title === "E-mail"
+      ? "person"
+      : title === "Password"
+      ? "lock-closed"
+      : undefined;
 
   return (
     <View style={otherStyles}>
-      <Text style={styles.title}>{title}</Text>
+      <FormFieldTitle title={title} />
       <View style={styles.iconBackground} />
-      <View style={styles.inputContainer}>
+      <View style={styles.inputWrapper}>
         {icon && <FormFieldIcon name={icon} />}
-        <TextInput
-          style={styles.textInput}
-          value={value}
+        <FormFieldInput
           placeholder={placeholder}
-          placeholderTextColor="gray"
-          onChangeText={handleChangeText}
+          value={value}
+          handleChangeText={handleChangeText}
           secureTextEntry={title === "Password" && !showPassword}
           keyboardType={keyboardType}
           {...props}
@@ -88,13 +112,22 @@ const FormField: React.FC<FormFieldProps> = ({
 };
 
 const styles = StyleSheet.create({
-  title: {
+  fieldTitle: {
     color: "white",
     paddingLeft: 70,
     marginBottom: -10,
   },
+  inputField: {
+    flex: 1,
+    color: "white",
+    fontWeight: "600",
+    justifyContent: "center",
+    paddingLeft: "18%",
+  },
+  icon: {
+    alignSelf: "center",
+  },
   iconBackground: {
-    backgroundColor: "#DFEDFE",
     height: 72,
     width: 72,
     alignSelf: "flex-start",
@@ -105,7 +138,10 @@ const styles = StyleSheet.create({
     zIndex: 1,
     elevation: 1,
   },
-  inputContainer: {
+  iconWrapper: {
+    alignSelf: "center",
+  },
+  inputWrapper: {
     backgroundColor: "#4B96F9",
     borderColor: "#1C333E",
     borderWidth: 4,
@@ -116,25 +152,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 24,
   },
-  iconWrapper: {
-    position: "absolute",
-    left: 24,
-    bottom: 10,
-    zIndex: 2,
-  },
-  icon: {
-    alignSelf: "center",
-  },
-  textInput: {
-    flex: 1,
-    color: "white",
-    fontWeight: "600",
-    justifyContent: "center",
-    paddingLeft: 80,
-  },
-  eyeIcon: {
-    paddingTop: 9,
-    paddingRight: 10,
+  passwordToggleIcon: {
+    paddingRight: 0,
   },
 });
 
