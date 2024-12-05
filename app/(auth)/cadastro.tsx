@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, Image } from "react-native";
 import React, { useState } from "react";
 import { router, Link } from "expo-router";
 import CustomBttn from "../../components/CustomBttn";
+import Button from "@/components/Button";
 import FormField from "../../components/FormField";
 
 const Cadastro = () => {
@@ -93,12 +94,7 @@ const Cadastro = () => {
           handleChangeText={(e) => setForm({ ...form, password: e })}
           otherStyles={{ flex: 4 }}
         />
-        <CustomBttn
-          title="Cadastre-se"
-          handlePress={submit}
-          textStyles={styles.butao2}
-          isLoading={isSubmitting}
-        />
+        <Button text="Cadastre-se" onPress={submit} loading={isSubmitting} />
         <View
           style={{
             justifyContent: "center",

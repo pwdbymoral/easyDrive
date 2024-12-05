@@ -2,6 +2,7 @@ import React from "react";
 import { router } from "expo-router";
 import { Text, View, Image, StyleSheet, Dimensions } from "react-native";
 import CustomBttn from "../components/CustomBttn";
+import Button from "@/components/Button";
 
 const { width, height } = Dimensions.get("window");
 
@@ -18,16 +19,8 @@ const Index: React.FC = () => {
           Facilite sua direção com seu melhor amigo de viagens
         </Text>
         <View style={styles.buttons}>
-          <CustomBttn
-            title="Login"
-            handlePress={() => router.push("/login")}
-            textStyles={styles.button}
-          />
-          <CustomBttn
-            title="Cadastro"
-            handlePress={() => router.push("/cadastro")}
-            textStyles={styles.button}
-          />
+          <Button text="Login" onPress={() => router.push("/login")} />
+          <Button text="Cadastro" onPress={() => router.push("/cadastro")} />
         </View>
       </View>
     </View>

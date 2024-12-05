@@ -1,8 +1,8 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import React, { useState } from "react";
 import { router, Link } from "expo-router";
-import CustomBttn from "../../components/CustomBttn";
 import FormField from "../../components/FormField";
+import Button from "@/components/Button";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -79,11 +79,10 @@ const Login = () => {
           handleChangeText={(e) => setForm({ ...form, password: e })}
           otherStyles={{ flex: 2 }}
         />
-        <CustomBttn
-          title="Entrar"
-          handlePress={submit} // Chama a função de submit para fazer o login
-          textStyles={styles.butao2}
-          isLoading={isSubmitting}
+        <Button
+          text="Entrar"
+          onPress={submit} // Chama a função de submit para fazer o login
+          loading={isSubmitting}
         />
         <View
           style={{
