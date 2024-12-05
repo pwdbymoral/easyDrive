@@ -1,7 +1,6 @@
 import React from "react";
 import { router } from "expo-router";
 import { Text, View, Image, StyleSheet, Dimensions } from "react-native";
-import CustomBttn from "../components/CustomBttn";
 import Button from "@/components/Button";
 
 const { width, height } = Dimensions.get("window");
