@@ -15,11 +15,11 @@ const Index: React.FC = () => {
           resizeMode="contain"
         />
         <Text style={styles.title}>
-          Facilite sua direção com seu melhor amigo de viagens
+          Facilite sua direção com seu melhor amigo de viagens.
         </Text>
         <View style={styles.buttons}>
-          <Button text="Login" onPress={() => router.push("/login")} />
-          <Button text="Cadastro" onPress={() => router.push("/cadastro")} />
+          <Button text="Entrar" onPress={() => router.push("/login")} />
+          <Button text="Cadastre-se" onPress={() => router.push("/cadastro")} />
         </View>
       </View>
     </View>
@@ -45,13 +45,12 @@ const styles = StyleSheet.create({
   logo: {
     width: width,
     height: height,
-    flex: 1,
-    alignContent: "flex-start",
   },
   title: {
-    fontSize: 24,
     color: "white",
-    letterSpacing: 2,
+    fontSize: 20,
+    letterSpacing: 4,
+    fontWeight: "bold",
     textAlign: "center",
     marginBottom: 24,
     marginHorizontal: 30,
