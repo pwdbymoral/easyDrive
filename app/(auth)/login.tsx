@@ -3,104 +3,19 @@ import React, { useState } from "react";
 import { router, Link } from "expo-router";
 import FormField from "../../components/FormField";
 import Button from "@/components/Button";
+import LoginForm from "@/components/LoginForm";
 
 const Login = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const submit = async () => {
-    setIsSubmitting(true); // Indica que o envio está em progresso
-    try {
-      const response = await fetch(
-        "http://192.168.113.161:8000/loginMotorista/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: form.email,
-            senha: form.password,
-          }),
-        }
-      );
-
-      const data = await response.json();
-      if (response.ok) {
-        // Login bem-sucedido
-        alert("Login realizado com sucesso!");
-        router.push("../(tabs)/home"); // Redireciona após o login
-      } else {
-        // Exibe erro se houver
-        alert(`Erro: dados incorretos`);
-      }
-    } catch (error) {
-      alert("Erro ao tentar realizar o login. Tente novamente.");
-      console.error(error);
-    } finally {
-      setIsSubmitting(false); // Finaliza o estado de carregamento
-    }
-  };
-
   return (
-    <View style={styles.backside}>
-      <View style={styles.teste}>
+    <View style={styles.container}>
+      <View style={styles.content}>
         <Image
           source={require("../../assets/images/easyDriveNoBG.png")}
           style={styles.logo}
           resizeMode="contain"
         />
-        <Text
-          style={[
-            styles.formContainer,
-            {
-              color: "white",
-              fontSize: 20,
-              letterSpacing: 4,
-              fontWeight: "bold",
-            },
-          ]}
-        >
-          Bem-vindo de volta!
-        </Text>
-        <FormField
-          title="E-mail"
-          value={form.email}
-          handleChangeText={(e) => setForm({ ...form, email: e })}
-          otherStyles={{ marginBottom: 20 }}
-          keyboardType="email-address"
-        />
-        <FormField
-          title="Password"
-          value={form.password}
-          handleChangeText={(e) => setForm({ ...form, password: e })}
-          otherStyles={{ flex: 2 }}
-        />
-        <Button
-          text="Entrar"
-          onPress={submit} // Chama a função de submit para fazer o login
-          loading={isSubmitting}
-        />
-        <View
-          style={{
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: 2,
-          }} /*"justify-center pt-5 flex-row gap-2"*/
-        >
-          <Text style={{ color: "white", paddingBottom: 20 }}>
-            Não tem uma conta?
-          </Text>
-          <Link
-            href={"/cadastro"}
-            style={{ color: "orange", textDecorationLine: "underline" }}
-          >
-            Cadastre-se já!
-          </Link>
-        </View>
+        <Text style={styles.welcomeText}>Bem-vindo de volta!</Text>
+        <LoginForm />
       </View>
     </View>
   );
@@ -109,7 +24,7 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
-  backside: {
+  container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -122,44 +37,35 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   logo: {
-    width: 300,
     height: 300,
-    flex: 1,
-    alignContent: "flex-start",
-    margin: 20,
+    width: 450,
   },
-  teste: {
+  content: {
     justifyContent: "center",
     alignItems: "center",
     margin: 20,
   },
-  butao: {
-    backgroundColor: "#4B96F9",
-    borderColor: "#1C333E",
-    borderWidth: 4,
-    borderRadius: 40,
-    width: 360,
-    height: 50,
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontSize: 22,
-    fontWeight: "bold",
+  welcomeText: {
     color: "white",
+    fontSize: 20,
     letterSpacing: 4,
+    fontWeight: "bold",
   },
-  butao2: {
-    backgroundColor: "#4B96F9",
-    borderColor: "#1C333E",
-    borderWidth: 4,
-    borderRadius: 40,
-    width: 180,
-    height: 50,
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontSize: 22,
-    fontWeight: "bold",
+  passwordField: {
+    flex: 2,
+  },
+  signupContainer: {
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 2,
+  },
+  signupText: {
     color: "white",
-    letterSpacing: 4,
+    paddingBottom: 20,
+  },
+  signupLink: {
+    color: "#FFAE00",
+    textDecorationLine: "underline",
   },
   bolinha: {
     backgroundColor: "#DFEDFE",
