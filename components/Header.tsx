@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    borderBottomColor: "#FFAE00",
+    borderBottomWidth: 2,
   },
   backToIndex: {
     position: "absolute",

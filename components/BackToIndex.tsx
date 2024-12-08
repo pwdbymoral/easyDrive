@@ -13,7 +13,7 @@ const BackToIndex = ({ style }: BackToIndexProps) => {
       <Icon
         name="arrow-back"
         size={24}
-        color="orange"
+        color="#FFAE00"
         onPress={() => router.push("/")}
       />
     </View>
