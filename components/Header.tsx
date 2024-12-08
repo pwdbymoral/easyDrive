@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import BackToIndex from "./BackToIndex";
+import BackButton from "./BackButton";
 
 type HeaderProps = {
   title: string;
@@ -8,7 +8,7 @@ type HeaderProps = {
 const Header = ({ title }: HeaderProps) => {
   return (
     <View style={styles.header}>
-      <BackToIndex style={styles.backToIndex} />
+      <BackButton style={styles.backButton} route={"/"} />
       <Text style={styles.title}>{title}</Text>
     </View>
   );
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#FFAE00",
     borderBottomWidth: 2,
   },
-  backToIndex: {
+  backButton: {
     position: "absolute",
     paddingLeft: "10%",
   },

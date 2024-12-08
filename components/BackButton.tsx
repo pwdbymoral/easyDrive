@@ -1,23 +1,24 @@
 import { View, ViewStyle } from "react-native";
 import React from "react";
-import { router } from "expo-router";
+import { Href, router } from "expo-router";
 import { Ionicons as Icon } from "@expo/vector-icons";
 
-interface BackToIndexProps {
+interface BackButtonProps {
+  route: Href<string | object>;
   style?: ViewStyle;
 }
 
-const BackToIndex = ({ style }: BackToIndexProps) => {
+const BackButton = ({ route, style }: BackButtonProps) => {
   return (
     <View style={style}>
       <Icon
         name="arrow-back"
         size={24}
         color="#FFAE00"
-        onPress={() => router.push("/")}
+        onPress={() => router.push(route)}
       />
     </View>
   );
 };
 
-export default BackToIndex;
+export default BackButton;
