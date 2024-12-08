@@ -16,33 +16,31 @@ interface FormFieldProps {
   handleChangeText: (text: string) => void;
   otherStyles?: object;
   keyboardType?: KeyboardTypeOptions;
+  secureTextEntry?: boolean;
 }
 
-const FormFieldIcon: React.FC<{ name: string }> = ({ name }) => (
-  <View style={styles.iconWrapper}>
-    <Ionicons name={name} size={24} color="red" style={styles.icon} />
-  </View>
+const FieldTitle: React.FC<{ title: string }> = ({ title }) => (
+  <Text style={styles.fieldTitle}>{title}</Text>
 );
 
-const FormFieldPasswordToggle: React.FC<{
+const FieldIcon: React.FC<{ name: string }> = ({ name }) => (
+  <Ionicons name={name} size={20} color="#FFAE00" style={styles.fieldIcon} />
+);
+
+const PasswordToggle: React.FC<{
   showPassword: boolean;
   handlePassword: () => void;
 }> = ({ showPassword, handlePassword }) => (
-  <TouchableOpacity onPress={handlePassword}>
+  <TouchableOpacity onPress={handlePassword} style={styles.passwordToggle}>
     <Ionicons
       name={showPassword ? "eye-off" : "eye"}
       size={24}
       color="#dfdede"
-      style={styles.passwordToggleIcon}
     />
   </TouchableOpacity>
 );
 
-const FormFieldTitle: React.FC<{ title: string }> = ({ title }) => (
-  <Text style={styles.fieldTitle}>{title}</Text>
-);
-
-const FormFieldInput: React.FC<{
+const PasswordInput: React.FC<{
   placeholder: string;
   value: string;
   handleChangeText: (text: string) => void;
@@ -71,8 +69,8 @@ const FormField: React.FC<FormFieldProps> = ({
   value,
   placeholder,
   handleChangeText,
-  otherStyles,
   keyboardType = "default",
+  secureTextEntry,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -81,27 +79,29 @@ const FormField: React.FC<FormFieldProps> = ({
 
   const icon =
     title === "E-mail"
+      ? "mail"
+      : title === "Nome"
       ? "person"
-      : title === "Password"
+      : title === "Senha" || secureTextEntry
       ? "lock-closed"
       : undefined;
 
   return (
-    <View style={otherStyles}>
-      <FormFieldTitle title={title} />
-      <View style={styles.iconBackground} />
+    <View style={styles.container}>
+      <FieldTitle title={title} />
+      <View />
       <View style={styles.inputWrapper}>
-        {icon && <FormFieldIcon name={icon} />}
-        <FormFieldInput
+        {icon && <FieldIcon name={icon} />}
+        <PasswordInput
           placeholder={placeholder}
           value={value}
           handleChangeText={handleChangeText}
-          secureTextEntry={title === "Password" && !showPassword}
+          secureTextEntry={secureTextEntry && !showPassword}
           keyboardType={keyboardType}
           {...props}
         />
-        {title === "Password" && (
-          <FormFieldPasswordToggle
+        {secureTextEntry && (
+          <PasswordToggle
             showPassword={showPassword}
             handlePassword={handlePassword}
           />
@@ -112,34 +112,24 @@ const FormField: React.FC<FormFieldProps> = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 16,
+  },
   fieldTitle: {
     color: "white",
-    paddingLeft: 70,
-    marginBottom: -10,
+    fontWeight: "600",
+    marginBottom: 8,
+    fontSize: 16,
+  },
+  fieldIcon: {
+    position: "absolute",
+    left: 16,
   },
   inputField: {
-    flex: 1,
     color: "white",
     fontWeight: "600",
     justifyContent: "center",
-    paddingLeft: "18%",
-  },
-  icon: {
-    alignSelf: "center",
-  },
-  iconBackground: {
-    height: 72,
-    width: 72,
-    alignSelf: "flex-start",
-    borderColor: "#1C333E",
-    borderWidth: 6,
-    borderRadius: 360,
-    marginBottom: -60,
-    zIndex: 1,
-    elevation: 1,
-  },
-  iconWrapper: {
-    alignSelf: "center",
+    paddingLeft: "10%",
   },
   inputWrapper: {
     backgroundColor: "#4B96F9",
@@ -152,8 +142,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 24,
   },
-  passwordToggleIcon: {
-    paddingRight: 0,
+  passwordToggle: {
+    position: "absolute",
+    right: 16,
   },
 });
 
