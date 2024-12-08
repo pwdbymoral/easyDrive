@@ -4,16 +4,22 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
+  ViewStyle,
 } from "react-native";
 
 interface ButtonProps {
   onPress: () => void;
   text: string;
   loading?: boolean;
+  style?: ViewStyle;
 }
 
-const Button: React.FC<ButtonProps> = ({ onPress, text, loading }) => (
-  <TouchableOpacity style={styles.button} onPress={onPress} disabled={loading}>
+const Button: React.FC<ButtonProps> = ({ onPress, text, loading, style }) => (
+  <TouchableOpacity
+    style={[styles.button, style]}
+    onPress={onPress}
+    disabled={loading}
+  >
     {loading ? (
       <ActivityIndicator size="small" color="#fff" />
     ) : (
@@ -24,12 +30,12 @@ const Button: React.FC<ButtonProps> = ({ onPress, text, loading }) => (
 
 const styles = StyleSheet.create({
   button: {
-    width: 200,
-    height: 40,
+    width: 300,
+    height: 50,
     backgroundColor: "#FFAE00",
     borderRadius: 20,
     borderColor: "#1C333E",
-    borderWidth: 2,
+    borderWidth: 4,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10,
